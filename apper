@@ -1,0 +1,45 @@
+#!/bin/bash
+
+appNameExt=$1
+appNameTrim=""
+appNameDesk=""
+appPath=""
+
+iconNameExt=$2
+iconPath=""
+
+function iconPath() {
+	echo "Parsing icon path..."
+	iconPath=$(find /home/sedisal -name $iconNameExt 2>/dev/null | head -n1)
+}
+function appPath() {
+	echo "Parsing app path..."
+	appPath=$(find /home/sedisal -name $appNameExt 2>/dev/null | head -n1) 
+}
+
+if [ -z "$appNameExt" ]; then
+	read -p "Enter the filename of your AppImage: " appNameExt	
+fi
+appNameTrim=${appNameExt%.*}
+appNameDesk="$appNameTrim.desktop"
+appPath
+
+if [ -n "$iconNameExt" ]; then
+	iconPath		
+fi
+
+#echo -e "$appNameExt\n$appNameTrim\n$appNameDesk\n$appPath\n$iconNameExt\n$iconPath"
+
+cd ~/.local/share/applications
+
+echo "Writing to applications directory..."
+cat << EOF > $appNameDesk
+[Desktop Entry]
+Type=Application
+Name=$appNameTrim
+Icon=$iconPath
+Exec=$appPath
+Categories=Utility;
+EOF
+
+echo "Done!"
