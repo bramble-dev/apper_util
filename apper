@@ -10,11 +10,11 @@ iconPath=""
 
 function iconPath() {
 	echo "Parsing icon path..."
-	iconPath=$(find /home/sedisal -name $iconNameExt 2>/dev/null | head -n1)
+	iconPath=$(find /home/$(whoami) -name $iconNameExt 2>/dev/null | head -n1)
 }
 function appPath() {
 	echo "Parsing app path..."
-	appPath=$(find /home/sedisal -name $appNameExt 2>/dev/null | head -n1) 
+	appPath=$(find /home/$(whoami) -name $appNameExt 2>/dev/null | head -n1) 
 }
 
 if [ -z "$appNameExt" ]; then
